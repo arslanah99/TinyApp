@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/arslanah99/TinyApp#readme",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4"
   }
 }
+
