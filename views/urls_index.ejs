@@ -15,11 +15,13 @@
 
     <h1>MY URLs</h1>
     <li><a href='/urls/new'>Add a new Link</a></li>
-
     <ul>
-        <% for(var templateVars in urls) { %>
-            <li> <b><%= templateVars %>:</b> <%= urls[templateVars] %></li>
-        <% } %>
+            <% for(var templateVars in urls) { %>
+                <li> <b><%= templateVars %>:</b> <%= urls[templateVars] %>
+        <form method="POST" action="/urls/<%=templateVars%>/delete">
+            <button type='submit' class='btn btn-danger'>Delete Button</button></li>
+        </form>
+            <% } %>
     </ul>
 </body>
 </html>

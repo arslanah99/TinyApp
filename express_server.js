@@ -6,6 +6,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 let shortUrl = generateRandomString();
 
 
+
 function generateRandomString(){
     let newString = ''
     //input an empty string
@@ -40,6 +41,14 @@ app.get("/urls/new", (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
     let templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase};
     res.render('urls_show', templateVars)
+})
+
+
+app.post('/urls/:shortURL/delete', (req, res) => {
+    // var deleter = urlDatabase.req.params.shortURL
+    // delete deleter
+    delete urlDatabase[req.params.shortURL]
+    res.redirect('/urls')
 })
 
 app.post('/urls', (req, res) => {
