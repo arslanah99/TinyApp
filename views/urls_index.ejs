@@ -12,7 +12,10 @@
     <!-- Add EJS code here -->
     <%- include ./partials/_header.ejs %>
 
+
     <h1>MY URLs</h1>
+    <li><a href='/urls/new'>Add a new Link</a></li>
+
     <ul>
         <% for(var templateVars in urls) { %>
             <li> <b><%= templateVars %>:</b> <%= urls[templateVars] %></li>
