@@ -39,7 +39,7 @@ app.get("/urls/new", (req, res) => {
   });
 
 app.get('/urls/:shortURL', (req, res) => {
-    let templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase};
+    let templateVars = {shortURL: req.params.shortURL};
     res.render('urls_show', templateVars)
 })
 
@@ -58,6 +58,16 @@ app.post('/urls', (req, res) => {
     urlDatabase[shortUrl] = longUrl;
     let templateVars = {urls: urlDatabase};
     console.log(urlDatabase)
+    res.render('urls_index', templateVars)
+})
+
+app.post('/urls/:id', (req, res) => {
+    urlDatabase[req.params.id] = req.body.newURL
+    let templateVars = {urls: urlDatabase};
+    // console.log('hello')
+    // console.log(req.params.id)
+    // console.log(req.body)
+    // if(updatedURL !== ())
     res.render('urls_index', templateVars)
 })
 
