@@ -4,6 +4,9 @@ var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 let shortUrl = generateRandomString();
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
 
 
 
@@ -25,29 +28,54 @@ const urlDatabase = {
 };
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  
+  res.send("Hello!", templateVars);
+
 });
 
+app.get('/urls', (req, res) => {
+  let templateVars = {
+  username: req.cookies['username'], 
+  urls: urlDatabase
+}
+  res.render('urls_index', templateVars)
+})
+
+app.post('/logout', (req, res) => {
+  res.cookie('username', req.body.username)
+  res.clearCookie('username', res.body)
+  res.redirect('/urls')
+})
 
 app.post('/login', (req, res) => {
-  console.log(req.body)
+  res.cookie('username', req.body.username)
+  // console.log(req.body.username)
+  // res.send(req.cookies.username)
     res.redirect('/urls');
   })
   
-app.get('/urls', (req, res) => {
-    let templateVars = { urls: urlDatabase };
-    res.render('urls_index', templateVars);
-});
+// app.get('/urls', (req, res) => {
+//     let templateVars = { urls: urlDatabase };
+//     res.render('urls_index', templateVars);
+// });
 
 
 app.get("/urls/new", (req, res) => {
-    res.render("urls_new");
+    let templateVars = {
+    username: req.cookies['username']
+  }
+    res.render("urls_new", templateVars);
   });
 
 app.get('/urls/:shortURL', (req, res) => {
-    let templateVars = {shortURL: req.params.shortURL};
+    let templateVars = {
+      shortURL: req.params.shortURL, 
+      username: req.cookies['username'],
+      urls: urlDatabase
+    };
     res.render('urls_show', templateVars)
 })
+
 
 
 app.post('/urls/:shortURL/delete', (req, res) => {
@@ -62,14 +90,20 @@ app.post('/urls', (req, res) => {
     // res.send('Ok')
     let longUrl = req.body.longURL
     urlDatabase[shortUrl] = longUrl;
-    let templateVars = {urls: urlDatabase};
+    let templateVars = {
+      urls: urlDatabase, 
+      username: req.cookies['username']
+    };
     console.log(urlDatabase)
     res.render('urls_index', templateVars)
 })
 
 app.post('/urls/:id', (req, res) => {
     urlDatabase[req.params.id] = req.body.newURL
-    let templateVars = {urls: urlDatabase};
+    let templateVars = {
+      urls: urlDatabase,
+       username: req.cookies['username']
+      };
     // console.log('hello')
     // console.log(req.params.id)
     // console.log(req.body)

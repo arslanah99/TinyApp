@@ -1,10 +1,20 @@
 <header>
-    <h1>TinyApp</h1>
-    <h2>
-        <form method='post' action="/login">
-            <input type='text' value='' name='username'>
-            <input type="submit" value="login">
-        
-        </form>
-    </h2>
+
+    <h1>TinyApp </h1>
+
+<% if(username == undefined) {%>
+           <h2>
+                <form method='post' action="/login">
+                    <input type='text' value='' name='username'>
+                    <input type="submit" value="login">
+                
+                </form>
+            </h2>
+<% } else { %>
+    <form method='post' action='/logout'>
+        <%='Logged in as:'%> <%= username%>
+        <input type='submit' value='Sign Out' name='username'>
+    </form>
+<% } %>
+
 </header>
