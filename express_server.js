@@ -28,6 +28,12 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+
+app.post('/login', (req, res) => {
+  console.log(req.body)
+    res.redirect('/urls');
+  })
+  
 app.get('/urls', (req, res) => {
     let templateVars = { urls: urlDatabase };
     res.render('urls_index', templateVars);
