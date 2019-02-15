@@ -27,11 +27,34 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com",
 };
 
+const users = {
+  'User1': {
+    id: 'User1',
+    email: 'user1@example.com',
+    password: 'password'
+  },
+  'User2': {
+    id: 'User2',
+    email: 'user2@example.com',
+    password: 'password1'
+}
+}
+
 app.get("/", (req, res) => {
   
   res.send("Hello!", templateVars);
 
 });
+
+app.post('/register', (req, res) => {
+  let newUserId = generateRandomString();
+  let userObj = {
+    id: generateRandomString(),
+    email: req.body.email,
+    password: req.body.password
+  }
+  res.render('urls_registration')
+})
 
 app.get('/urls', (req, res) => {
   let templateVars = {
