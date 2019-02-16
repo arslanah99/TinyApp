@@ -49,6 +49,10 @@ app.get("/", (req, res) => {
 
 });
 
+
+
+
+
 //registaration page
 app.get('/register', (req, res) => {
   res.render('urls_registration')
@@ -103,11 +107,19 @@ app.post('/logout', (req, res) => {
   res.redirect('/urls')
 })
 
+//Login Page
+app.get('/login', (req, res) => {
+  res.render('urls_login')
+})
+
+
+
+//login post
 app.post('/login', (req, res) => {
-  res.cookie('user_id', req.body.user_id)
+  // res.cookie('user_id', req.body.user_id)
   // console.log(req.body.user_id)
   // res.send(req.cookies.user_id)
-    res.redirect('/urls');
+    res.redirect('/login');
   })
   
 // app.get('/urls', (req, res) => {
