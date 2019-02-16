@@ -1,26 +1,27 @@
 <header>
 
     <h1>TinyApp </h1>
-
-<% if(username == undefined) {%>
+<% console.log(user_id) %>
+<% if(user_id == undefined) {%>
            <h2>
                 <form method='post' action="/login">
-                    <input type='text' value='' name='username'>
+                    <input name='email' type='email' placeholder="Email">
                     <input type="submit" value="login">
                 
+                </form>
+                <form method='get' action='/register'>
+                    <input type='submit' value='Register'>
                 </form>
             </h2>
 <% } else { %>
     <form method='post' action='/logout'>
-        <%='Logged in as:'%> <%= username%>
-        <input type='submit' value='Sign Out' name='username'>
+        <%='Logged in as:'%> <%= user_id.email%>
+        <input type='submit' value='Sign Out' name='user_id'>
     </form>
 <% } %>
 
 
-<form method='post' action='/register'>
-    <input type='submit' value='Register' name='Register'>
-</form>
+
 
 
 </header>
