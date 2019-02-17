@@ -29,8 +29,8 @@ function generateRandomString(){
 //9sm5xk: gooogle.com
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com",
+  // "b2xVn2": "http://www.lighthouselabs.ca",
+  // "9sm5xK": "http://www.google.com",
 };
 
 
@@ -92,7 +92,7 @@ app.post('/register', (req, res) => {
 
 app.get('/urls', (req, res) => {
   let theID = req.cookies['user_id'];
-  console.log(theID)
+  // console.log(theID)
   console.log('---------------------')
   let templateVars = {
   user_id: users[theID],
@@ -116,10 +116,19 @@ app.get('/login', (req, res) => {
 
 //login post
 app.post('/login', (req, res) => {
-  // res.cookie('user_id', req.body.user_id)
+  let emailObj = req.body.email;
+  let passwordObj = req.body.password
+  // res.cookie('user_id', req.body.)
   // console.log(req.body.user_id)
   // res.send(req.cookies.user_id)
-    res.redirect('/login');
+  for(var keys in users){
+    if((users[keys].email) === (emailObj) && (users[keys].password === (passwordObj))){
+      console.log(keys)
+     res.cookie('user_id', keys) 
+    res.redirect('/urls');
+    }
+  }
+  res.sendStatus(403)
   })
   
 // app.get('/urls', (req, res) => {
@@ -129,8 +138,9 @@ app.post('/login', (req, res) => {
 
 
 app.get("/urls/new", (req, res) => {
+  let theID = req.cookies['user_id'];
     let templateVars = {
-    user_id: req.cookies['user_id']
+    user_id: users[theID]
   }
     res.render("urls_new", templateVars);
   });

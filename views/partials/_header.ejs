@@ -6,15 +6,16 @@
            <h2>
                 <form method='post' action="/login">
                     <a href='/login'>Login</a>
-                </form>
-                <form method='get' action='/register'>
+                    | <form method='get' action='/register'>
                     <a href='/register'>Register</a>
                 </form>
+            </form>
+
             </h2>
 <% } else { %>
     <form method='post' action='/logout'>
         <%='Logged in as:'%> <%= user_id.email%>
-        <input type='submit' value='Sign Out' name='user_id'>
+        <button type='submit' class='btn btn-primary' value='Sign Out' name='user_id'>Logout</button>
     </form>
 <% } %>
 
