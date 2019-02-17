@@ -3,7 +3,6 @@ var app = express();
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
-let shortUrl = generateRandomString();
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
@@ -38,13 +37,12 @@ const urlDatabase = {
 const users = {
   'User1': {
     id: 'User1',
-    email: 'user1@example.com',
-    password: 'password'
+    email: 'a@a.com',
+    password: 'a'
   }
 }
 
 app.get("/", (req, res) => {
-  
   res.send("Hello!", templateVars);
 
 });
@@ -79,9 +77,9 @@ app.post('/register', (req, res) => {
 
 
   }
-  res.cookie('user_id', newUserId);
-
   users[newUserId] = userObj
+  res.cookie('user_id', newUserId);
+console.log(users)
 
   res.redirect('/urls')
 })
@@ -92,8 +90,6 @@ app.post('/register', (req, res) => {
 
 app.get('/urls', (req, res) => {
   let theID = req.cookies['user_id'];
-  // console.log(theID)
-  console.log('---------------------')
   let templateVars = {
   user_id: users[theID],
   urls: urlDatabase
@@ -123,7 +119,7 @@ app.post('/login', (req, res) => {
   // res.send(req.cookies.user_id)
   for(var keys in users){
     if((users[keys].email) === (emailObj) && (users[keys].password === (passwordObj))){
-      console.log(keys)
+      // console.log(keys)
      res.cookie('user_id', keys) 
     res.redirect('/urls');
     }
@@ -142,13 +138,20 @@ app.get("/urls/new", (req, res) => {
     let templateVars = {
     user_id: users[theID]
   }
+  if(theID === undefined){
+    res.redirect('/login')
+  } else{
     res.render("urls_new", templateVars);
+    
+  }
+  
   });
 
 app.get('/urls/:shortURL', (req, res) => {
+  let theID = req.cookies['user_id'];
     let templateVars = {
       shortURL: req.params.shortURL, 
-      user_id: req.cookies['user_id'],
+      user_id: users[theID],
       urls: urlDatabase,
       'user_id': req.cookies['user_id'], users:users
     };
@@ -167,20 +170,24 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 app.post('/urls', (req, res) => {
     // console.log(req.body);
     // res.send('Ok')
+  let shortUrl = generateRandomString();
+    let theID = req.cookies['user_id'];
     let longUrl = req.body.longURL
     urlDatabase[shortUrl] = longUrl;
     let templateVars = {
       urls: urlDatabase, 
-      user_id: req.cookies['user_id']
+      user_id: users[theID]
     };
+    console.log(shortUrl)
     res.render('urls_index', templateVars)
 })
 
 app.post('/urls/:id', (req, res) => {
+  let theID = req.cookies['user_id'];
     urlDatabase[req.params.id] = req.body.newURL
     let templateVars = {
       urls: urlDatabase,
-       user_id: req.cookies['user_id']
+       user_id: users[theID]
       };
     // console.log('hello')
     // console.log(req.params.id)
@@ -188,8 +195,6 @@ app.post('/urls/:id', (req, res) => {
     // if(updatedURL !== ())
     res.render('urls_index', templateVars)
 })
-
-console.log('--------------')
 
 app.get("/u/:shortURL", (req, res) => {
     //Take the short url that was generated and make that equal

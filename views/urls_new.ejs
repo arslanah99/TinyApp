@@ -12,6 +12,8 @@
 
   <body style="font-size:20px; padding:50px;">
 
+      <% if(user_id !== undefined) {%>
+
     <%- include ./partials/_header.ejs %>
 
     <h3>Create TinyURL</h3>
@@ -22,5 +24,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
+    <% } %>
+
   </body>
 </html>
