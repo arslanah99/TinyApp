@@ -32,8 +32,12 @@ const urlDatabase = {
   // b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
   // i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
+
+
 function urlsForUser(loggedInUserId){
-  let urlEmptyObject = {};
+  let urlEmptyObject = {
+    // b6UTxQ:{ longURL: "https://www.tsn.ca", userID: "aJ48lW" }
+  };
   for(var key in urlDatabase){
     if(urlDatabase[key].userID === loggedInUserId){
       urlEmptyObject[key] = urlDatabase[key]
@@ -177,7 +181,10 @@ app.get('/urls/:shortURL', (req, res) => {
 app.post('/urls/:shortURL/delete', (req, res) => {
     // var deleter = urlDatabase.req.params.shortURL
     // delete deleter
+    let theID = req.cookies['user_id'];
+    if(urlDatabase[req.params.shortURL].userID === theID){
     delete urlDatabase[req.params.shortURL]
+    }
     res.redirect('/urls')
 })
 
@@ -200,7 +207,9 @@ app.post('/urls', (req, res) => {
 
 app.post('/urls/:id', (req, res) => {
   let theID = req.cookies['user_id'];
-    urlDatabase[req.params.id] = req.body.newURL
+  if(urlDatabase[req.params.id].userID === theID){
+    urlDatabase[req.params.id].longURL = req.body.newURL
+  }
     let templateVars = {
       urls: urlDatabase,
        user_id: users[theID]
@@ -215,7 +224,10 @@ app.post('/urls/:id', (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
     //Take the short url that was generated and make that equal
     //to longURL
-    let longURL = urlDatabase[shortUrl];
+    // if(urlDatabase[req.param.id].userID === theID){
+      
+    // }
+    let longURL = urlDatabase[req.params.shortURL].longURL;
     res.redirect(longURL);
   });
 
