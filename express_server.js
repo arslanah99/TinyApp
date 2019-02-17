@@ -1,5 +1,6 @@
 var express = require("express");
 var app = express();
+const bcrypt = require('bcrypt');
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -78,10 +79,11 @@ app.get('/register', (req, res) => {
 //registartion post
 app.post('/register', (req, res) => {
   let newUserId = generateRandomString() 
+  let encryptedPassword = bcrypt.hashSync(req.body.password, 10);
   const userObj = {
     id: newUserId,
     email: req.body.email,
-    password: req.body.password
+    password: encryptedPassword
   }
   console.log('Users database: ', users);
 
@@ -107,6 +109,7 @@ console.log(users)
 // })
 
 app.get('/urls', (req, res) => {
+  console.log('hgoi')
   let theID = req.cookies['user_id'];
   let templateVars = {
   user_id: users[theID],
@@ -130,13 +133,13 @@ app.get('/login', (req, res) => {
 
 //login post
 app.post('/login', (req, res) => {
-  let emailObj = req.body.email;
-  let passwordObj = req.body.password
+  let providedEmail = req.body.email;
+  let providedPassword = req.body.password
   // res.cookie('user_id', req.body.)
   // console.log(req.body.user_id)
   // res.send(req.cookies.user_id)
   for(var keys in users){
-    if((users[keys].email) === (emailObj) && (users[keys].password === (passwordObj))){
+    if((users[keys].email) === (providedEmail) && bcrypt.compareSync(providedPassword, users[keys].password)){
       // console.log(keys)
      res.cookie('user_id', keys) 
     res.redirect('/urls');
@@ -191,7 +194,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 app.post('/urls', (req, res) => {
     // console.log(req.body);
     // res.send('Ok')
-    // console.log('HELLLOO')
+    console.log('HELLLOO')
   let shortUrl = generateRandomString();
     let theID = req.cookies['user_id'];
     let longUrl = req.body.longURL
@@ -202,7 +205,7 @@ app.post('/urls', (req, res) => {
       user_id: users[theID]
     };
     
-    res.render('urls_index', templateVars)
+    res.redirect('/urls')
 })
 
 app.post('/urls/:id', (req, res) => {
