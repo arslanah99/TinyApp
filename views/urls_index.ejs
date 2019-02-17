@@ -17,7 +17,7 @@
     <li><a href='/urls/new'>Add a new Link</a></li>
     <ul>
             <% for(var templateVars in urls) { %>
-                <li> <b><%= templateVars %>:</b> <%= urls[templateVars] %>
+                <li> <b><%= templateVars %>:</b> <%= urls[templateVars].longURL %>
         <form method="POST" action="/urls/<%=templateVars%>/delete">
             <button type='submit' class='btn btn-danger'>Delete Button</button></li>
             <a href='/urls/<%=templateVars%>'>EDIT</a>

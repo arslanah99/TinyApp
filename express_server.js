@@ -15,6 +15,7 @@ app.use(cookieParser())
 // }
 
 
+
 function generateRandomString(){
     let newString = ''
     //input an empty string
@@ -28,10 +29,18 @@ function generateRandomString(){
 //9sm5xk: gooogle.com
 
 const urlDatabase = {
-  // "b2xVn2": "http://www.lighthouselabs.ca",
-  // "9sm5xK": "http://www.google.com",
+  // b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  // i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
-
+function urlsForUser(loggedInUserId){
+  let urlEmptyObject = {};
+  for(var key in urlDatabase){
+    if(urlDatabase[key].userID === loggedInUserId){
+      urlEmptyObject[key] = urlDatabase[key]
+    }
+  }
+  return urlEmptyObject
+}
 
 
 const users = {
@@ -39,6 +48,11 @@ const users = {
     id: 'User1',
     email: 'a@a.com',
     password: 'a'
+  },
+  'User2': {
+    id: 'User2',
+    email: 'b@b.com',
+    password: 'b'
   }
 }
 
@@ -92,7 +106,7 @@ app.get('/urls', (req, res) => {
   let theID = req.cookies['user_id'];
   let templateVars = {
   user_id: users[theID],
-  urls: urlDatabase
+  urls: urlsForUser(theID)
 }
   res.render('urls_index', templateVars)
 })
@@ -170,15 +184,17 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 app.post('/urls', (req, res) => {
     // console.log(req.body);
     // res.send('Ok')
+    // console.log('HELLLOO')
   let shortUrl = generateRandomString();
     let theID = req.cookies['user_id'];
     let longUrl = req.body.longURL
-    urlDatabase[shortUrl] = longUrl;
+    let emptObj = {longURL: longUrl, userID:theID};
+    urlDatabase[shortUrl] = emptObj;
     let templateVars = {
-      urls: urlDatabase, 
+      urls: urlsForUser(theID), 
       user_id: users[theID]
     };
-    console.log(shortUrl)
+    
     res.render('urls_index', templateVars)
 })
 
