@@ -38,7 +38,7 @@ function urlsForUser(loggedInUserId) {
 const users = {};
 
 app.get("/", (req, res) => {
-  res.redirect("/login");
+  res.redirect("/urls");
 });
 
 //registaration page
@@ -66,7 +66,7 @@ app.post("/register", (req, res) => {
       users[keys].email === req.body.email ||
       users[keys].password === req.body.password
     ) {
-      res.redirect("/urls");
+      res.sendStatus(400)
     }
   }
   users[newUserId] = userObj;
@@ -127,10 +127,13 @@ app.get("/urls/new", (req, res) => {
 });
 //getting shorturl update page
 app.get("/urls/:shortURL", (req, res) => {
+  let theID = req.session["user_id"];
   if (urlDatabase[req.params.shortURL] === undefined) {
     res.send("URL FOR GIVEN ID DOES NOT EXIST").sendStatus(401);
+  }
+   else if (urlDatabase[req.params.shortURL].userID !== theID) {
+    res.send('YOU ARE NOT ALLOWED TO ACCESS ANOTHER USERS SHORTURL FOR UPDATING').sendStatus(401);
   } else {
-    let theID = req.session["user_id"];
     console.log(users[theID]);
     let templateVars = {
       shortURL: req.params.shortURL,
@@ -185,13 +188,10 @@ app.post("/urls/:id", (req, res) => {
 });
 //get route to use the short url to go to the long url page
 app.get("/u/:shortURL", (req, res) => {
-  if (urlDatabase[req.params.shortURL] === undefined) {
-    res.send("URL ID DOES NOT EXIST").sendStatus(400);
-  } else {
+
     let longURL = urlDatabase[req.params.shortURL].longURL;
 
     res.redirect(longURL);
-  }
 });
 
 app.listen(PORT, () => {
