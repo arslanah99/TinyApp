@@ -1,25 +1,26 @@
 <header>
-
-    <h1>TinyApp </h1>
-<% if(user_id == undefined) {%>
-           <h2>
-                <form method='post' action="/login">
-                    <a href='/login'>Login</a>
-                    | <form method='get' action='/register'>
-                    <a href='/register'>Register</a>
-                </form>
-            </form>
-
-            </h2>
-<% } else { %>
-    <form method='post' action='/logout'>
-        <%='Logged in as:'%> <%= user_id.email%>
-        <button type='submit' class='btn btn-primary' value='Sign Out' name='user_id'>Logout</button>
+  <h1>TinyApp</h1>
+  <% if(user_id == undefined) {%>
+  <h2>
+    <form method="post" action="/login">
+      <a href="/login">Login</a>
+      |
+      <form method="get" action="/register">
+        <a href="/register">Register</a>
+      </form>
     </form>
-<% } %>
-
-
-
-
-
+  </h2>
+  <% } else { %>
+  <form method="post" action="/logout">
+    <%='Logged in as:'%> <%= user_id.email%>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      value="Sign Out"
+      name="user_id"
+    >
+      Logout
+    </button>
+  </form>
+  <% } %>
 </header>

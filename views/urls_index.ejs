@@ -14,7 +14,7 @@
 
 <% if(user_id !== undefined) {%>
     <h1>MY URLs</h1>
-    <li><a href='/urls/new'>Add a new Link</a></li>
+    <a href='/urls/new'>Add a new Link</a>
     <ul>
             <% for(var templateVars in urls) { %>
                 <li> <b><%= templateVars %>:</b> <%= urls[templateVars].longURL %>
