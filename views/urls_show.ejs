@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <title>TinyApp</title>
-</head>
-<body style="font-size:20px; padding:50px;">
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <title>TinyApp</title>
+  </head>
+  <body style="font-size:20px; padding:50px;">
     <%- include ./partials/_header.ejs %>
-   
+
     <!-- Add EJS code here -->
-    <h1>ShortURL:<ul>
-        <% for(var templateVars in shortURL) { %>
-            <%=shortURL[templateVars]%>
-        <% } %>
-    </ul></h1>
-            <form method="POST" action="/urls/<%=shortURL%>">
-        <input name='newURL' type='text'><button type="submit" class="btn btn-success">Update</button>
+    <h1>
+      ShortURL:
+      <ul>
+        <% for(var templateVars in shortURL) { %> <%=shortURL[templateVars]%> <%
+        } %>
+      </ul>
+    </h1>
+    <form method="POST" action="/urls/<%=shortURL%>">
+      <input name="newURL" type="text" /><button
+        type="submit"
+        class="btn btn-success"
+      >
+        Update
+      </button>
     </form>
-</body>
+  </body>
 </html>
