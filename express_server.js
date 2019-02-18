@@ -14,26 +14,19 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   })
 );
-
+//generates a random string
 function generateRandomString() {
   let newString = "";
-  //input an empty string
-  //grab all letters from a-z & 0-9
-  //store the random value in the newString
-  //output new genearated string
   var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   for (var i = 6; i > 0; --i)
     newString += chars[Math.floor(Math.random() * chars.length)];
   return newString;
 }
 
-const urlDatabase = {
-
-};
+const urlDatabase = {};
 
 function urlsForUser(loggedInUserId) {
-  let urlEmptyObject = {
-  };
+  let urlEmptyObject = {};
   for (var key in urlDatabase) {
     if (urlDatabase[key].userID === loggedInUserId) {
       urlEmptyObject[key] = urlDatabase[key];
@@ -42,9 +35,7 @@ function urlsForUser(loggedInUserId) {
   return urlEmptyObject;
 }
 
-const users = {
-
-};
+const users = {};
 
 app.get("/", (req, res) => {
   res.redirect("/login");
@@ -84,7 +75,6 @@ app.post("/register", (req, res) => {
 
   res.redirect("/urls");
 });
-
 
 //getting the main /urls page
 app.get("/urls", (req, res) => {
@@ -153,14 +143,14 @@ app.get("/urls/:shortURL", (req, res) => {
 });
 //delete post
 app.post("/urls/:shortURL/delete", (req, res) => {
+//  if
   let theID = req.session["user_id"];
   if (urlDatabase[req.params.shortURL].userID === theID) {
     delete urlDatabase[req.params.shortURL];
-  }
-  if (urlDatabase[req.params.shortURL].userID !== theID) {
+    res.redirect("/urls");
+  } else if (urlDatabase[req.params.shortURL].userID !== theID) {
     res.send("YOU MUST BE LOGGED IN TO DO THAT").sendStatus(401);
   }
-  res.redirect("/urls");
 });
 //main url post route
 app.post("/urls", (req, res) => {
